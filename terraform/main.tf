@@ -1,10 +1,17 @@
-variable "access_key" {}
-variable "secret_key" {}
+terraform {
+  backend "s3" {
+    bucket  = "ayerst.net-terraform-state"
+    key     = "stage/services/devop.fullpipeline/terraform.tfstate"
+    region  = "eu-west-2" 
+    encrypt = "true"
+  }
+}
+
 
 provider "aws" {
   access_key = "${var.access_key}"
   secret_key = "${var.secret_key}"
-  region     = "eu-west-2"
+  region     = "${var.aws_region}"
 }
 
 data "aws_ami" "node_app_ami" {
