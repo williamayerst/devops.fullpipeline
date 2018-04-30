@@ -34,7 +34,7 @@
     - name: PM2 startup configuration (pm2 start)
       command: pm2 start bin/www --name="node-app"
       args:
-        chdir: /home/ubuntu/node-app/
+        chdir: /home/ubuntu/code/node-app
 
     - name: PM2 startup configuration (pm2 save)
       command: pm2 save
