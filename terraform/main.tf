@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket  = "ayerst.net-terraform-state"
-    key     = "stage/services/devop.fullpipeline/terraform.tfstate"
+    key     = "stage/services/devops.fullpipeline/terraform.tfstate"
     region  = "eu-west-2" 
     encrypt = "true"
   }
