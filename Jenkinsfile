@@ -7,9 +7,11 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'cd ./node-app'
-        sh 'npm install'
-        sh 'cd ../'
+        sh '''
+           cd ./node-app
+           npm install
+           cd ../
+        '''
       }
     }
     stage('Create Packer AMI') {
@@ -31,6 +33,7 @@ pipeline {
                cd ./terraform
                terraform init
                terraform apply -auto-approve -var access_key=${AWS_KEY} -var secret_key=${AWS_SECRET}
+               cd ../
             '''
         }
       }
