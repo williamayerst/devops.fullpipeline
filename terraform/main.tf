@@ -4,8 +4,6 @@ terraform {
     key     = "stage/services/devops.fullpipeline/terraform.tfstate"
     region  = "eu-west-2" 
     encrypt = "true"
-    access_key = "${var.access_key}"
-    secret_key = "${var.secret_key}"
     }
 }
 
