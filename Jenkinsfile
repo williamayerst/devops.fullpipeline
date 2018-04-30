@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'goforgold/build-container:latest'
+      image 'williamayerst/getupandgo'
     }
   }
   stages {
@@ -13,7 +13,7 @@ pipeline {
     stage('Create Packer AMI') {
         steps {
           withCredentials([
-            usernamePassword(credentialsId: 'ada90a34-30ef-47fb-8a7f-a97fe69ff93f', passwordVariable: 'AWS_SECRET', usernameVariable: 'AWS_KEY')
+            usernamePassword(credentialsId: '51f1fe89-b3cf-4328-be58-237861d91dd4', passwordVariable: 'AWS_SECRET', usernameVariable: 'AWS_KEY')
           ]) {
             sh 'packer build -var aws_access_key=${AWS_KEY} -var aws_secret_key=${AWS_SECRET} packer/packer.json'
         }
@@ -22,18 +22,18 @@ pipeline {
     stage('AWS Deployment') {
       steps {
           withCredentials([
-            usernamePassword(credentialsId: 'ada90a34-30ef-47fb-8a7f-a97fe69ff93f', passwordVariable: 'AWS_SECRET', usernameVariable: 'AWS_KEY'),
-            usernamePassword(credentialsId: '2facaea2-613b-4f34-9fb7-1dc2daf25c45', passwordVariable: 'REPO_PASS', usernameVariable: 'REPO_USER'),
+            usernamePassword(credentialsId: '51f1fe89-b3cf-4328-be58-237861d91dd4', passwordVariable: 'AWS_SECRET', usernameVariable: 'AWS_KEY'),
+            usernamePassword(credentialsId: '76680719-387f-43b7-a980-be1e480e16b7', passwordVariable: 'REPO_PASS', usernameVariable: 'REPO_USER'),
           ]) {
             sh 'rm -rf node-app-terraform'
-            sh 'git clone https://github.com/goforgold/node-app-terraform.git'
+            sh 'git clone https://github.com/williamayerst/devops.fullpipeline.git'
             sh '''
                cd node-app-terraform
                terraform init
                terraform apply -auto-approve -var access_key=${AWS_KEY} -var secret_key=${AWS_SECRET}
                git add terraform.tfstate
-               git -c user.name="Shashwat Tripathi" -c user.email="shashwatXXXX@gmail.com" commit -m "terraform state update from Jenkins"
-               git push https://${REPO_USER}:${REPO_PASS}@github.com/goforgold/node-app-terraform.git master
+               git -c user.name="William Ayerst" -c user.email="william@ayerst.net" commit -m "terraform state update from Jenkins"
+               git push https://${REPO_USER}:${REPO_PASS}@github.com/williamayerst/devops.fullpipeline.git master
             '''
         }
       }
