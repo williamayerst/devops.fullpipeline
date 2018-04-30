@@ -27,7 +27,6 @@ pipeline {
       steps {
           withCredentials([
             usernamePassword(credentialsId: '51f1fe89-b3cf-4328-be58-237861d91dd4', passwordVariable: 'AWS_SECRET', usernameVariable: 'AWS_KEY'),
-            usernamePassword(credentialsId: '76680719-387f-43b7-a980-be1e480e16b7', passwordVariable: 'REPO_PASS', usernameVariable: 'REPO_USER'),
           ]) {
             sh '''
                cd ./terraform
