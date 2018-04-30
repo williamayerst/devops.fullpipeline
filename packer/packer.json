@@ -32,7 +32,7 @@
     "type": "amazon-ebs",
     "access_key": "{{user `aws_access_key`}}",
     "secret_key": "{{user `aws_secret_key`}}",
-    "region": "ap-south-1",
+    "region": "eu-west-2",
     "source_ami_filter": {
       "filters": {
         "virtualization-type": "hvm",
@@ -44,7 +44,7 @@
     },
     "instance_type": "t2.micro",
     "ssh_username": "ubuntu",
-    "ami_name": "packer-example {{timestamp}}",
+    "ami_name": "devopspipeline-packer {{timestamp}}",
     "launch_block_device_mappings": [{
       "device_name": "/dev/sda1",
       "volume_size": 8,
