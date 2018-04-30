@@ -26,12 +26,12 @@ pipeline {
     stage('AWS Deployment') {
       steps {
           withCredentials([
-            usernamePassword(credentialsId: '51f1fe89-b3cf-4328-be58-237861d91dd4', passwordVariable: 'AWS_SECRET', usernameVariable: 'AWS_KEY'),
+            usernamePassword(credentialsId: '51f1fe89-b3cf-4328-be58-237861d91dd4', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID'),
           ]) {
             sh '''
                cd ./terraform
-               terraform init
-               terraform apply -auto-approve -var access_key=${AWS_KEY} -var secret_key=${AWS_SECRET}
+               terraform init -input=false -backend=true
+               terraform apply -auto-approve
                cd ../
             '''
         }
