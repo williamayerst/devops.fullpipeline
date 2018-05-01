@@ -10,26 +10,26 @@ stages:
  - plan
  - apply
  
-.build_nodeapp_script: &build_nodeapp_script
-    variables:
-      npm_config_cache: 'npm-cache'
-    stage: build
-    script: 
-      - cd ./node-app
-      - npm install
-      - cd ../
-
-
 build:
-  <<: *build_nodeapp_script
+  variables:
+    npm_config_cache: 'npm-cache'
+  stage: build
+  script: 
+    - cd ./node-app
+    - npm install
+    - cd ../
+  artifacts:
+    paths:
+    - node-app/ 
   when: always
-
 
 create:
   stage: create
   script:
     - packer build packer/packer_gitlab.json
   when: always
+  dependencies:
+  - build
 
 
 plan:
