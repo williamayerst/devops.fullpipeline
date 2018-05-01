@@ -4,12 +4,20 @@ variables:
 
 image: ${DOCKER_IMAGE}
 
+stages:
+ - build
+ - create
+ - plan
+ - apply
+ 
 .build_nodeapp_script: &build_nodeapp_script
+    variables:
+      npm_config_cache: 'npm-cache'
     stage: build
-    script: |
-        # cd ./node-app
-        # npm install
-        # cd ../
+    script: 
+      - cd ./node-app
+      - npm install
+      - cd ../
 
 
 build:
@@ -43,7 +51,7 @@ apply:
   script:
     - cd ./terraform/
     - ${TF_INIT}
-    - terraform apply # -var-file ./vars/$CI_ENVIRONMENT_NAME.tfvars
+    - terraform apply -auto-approve # -var-file ./vars/$CI_ENVIRONMENT_NAME.tfvars
   when: always
   #environment:
   #  name: production
