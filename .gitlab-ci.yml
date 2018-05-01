@@ -1,0 +1,54 @@
+variables:
+    DOCKER_IMAGE: "williamayerst/getupandgo"
+    TF_INIT: "terraform init -backend=true -get=true -input=false" # -var-file ./vars/$CI_ENVIRONMENT_NAME.tfvars
+
+image: ${DOCKER_IMAGE}
+
+.build_nodeapp_script: &build_nodeapp_script
+    stage: build
+    script: |
+        # cd ./node-app
+        # npm install
+        # cd ../
+
+
+build:
+  <<: *build_nodeapp_script
+  when: always
+
+
+create:
+  stage: create
+  script:
+    - packer build packer/packer_gitlab.json
+  when: always
+
+
+plan:
+  stage: plan
+  script: 
+    - cd ./terraform/
+    - ${TF_INIT}
+    - terraform plan -out planfile # -var-file ./vars/$CI_ENVIRONMENT_NAME.tfvars
+  when: always
+  #environment:
+  #  name: production
+  #  url: https://terraform.ayerst.net
+  artifacts:
+    paths:
+      - planfile
+
+apply:
+  stage: apply
+  script:
+    - cd ./terraform/
+    - ${TF_INIT}
+    - terraform apply # -var-file ./vars/$CI_ENVIRONMENT_NAME.tfvars
+  when: always
+  #environment:
+  #  name: production
+  #  url: https://terraform.ayerst.net
+  only: 
+   - master
+  dependencies:
+    - plan

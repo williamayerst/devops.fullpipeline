@@ -31,20 +31,4 @@ RUN rm terraform_0.11.1_linux_amd64.zip
 # Git
 #######################
 
-# Create the folders
-RUN mkdir /root/git
-WORKDIR /root/git
-
-# Install prerequisites
-RUN apt-get install build-essential libssl-dev libcurl4-gnutls-dev libexpat1-dev gettext unzip -y
-
-# Download an unzip git source files
-RUN wget https://github.com/git/git/archive/v2.9.5.zip -O git.zip
-RUN unzip git.zip
-
-# Make from source
-WORKDIR /root/git/git-2.9.5
-RUN make configure
-RUN ./configure --prefix=/usr
-RUN make all
-RUN make install
+# No longer required due to remote back-end on Terraform
