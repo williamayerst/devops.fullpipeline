@@ -30,7 +30,8 @@ data "aws_ami" "node_app_ami" {
 resource "aws_launch_configuration" "node_app_lc" {
   image_id      = "${data.aws_ami.node_app_ami.id}"
   instance_type = "t2.micro"
-  security_groups = ["${aws_security_group.node_app_websg.id}"]
+  key_name = "terraform"
+  security_groups = ["${aws_security_group.node_app_websg.id}","sg-fd26ec94"]
   lifecycle {
     create_before_destroy = true
   }
